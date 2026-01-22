@@ -4,9 +4,13 @@ import Toolbar from "@mui/material/Toolbar";
 import { Button, Grid } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { LOGIN_ROUTE } from "../utils/consts";
+import { useContext } from "react";
+import { Context } from "../main";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Navigation = () => {
-  const user = false;
+  const { auth } = useContext(Context);
+  const [user] = useAuthState(auth);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -14,7 +18,9 @@ const Navigation = () => {
         <Toolbar variant="dense">
           <Grid container="container" justifyContent="end" width="100%" gap={1}>
             {user ? (
-              <Button variant="contained">Exit</Button>
+              <Button variant="contained" onClick={() => auth.signOut()}>
+                Exit
+              </Button>
             ) : (
               <NavLink to={LOGIN_ROUTE}>
                 <Button variant="contained">Login</Button>
